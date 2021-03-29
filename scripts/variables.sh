@@ -19,6 +19,9 @@ auto_restore_halt_file="${HOME}/tmux_no_auto_restore"
 auto_start_option="@continuum-boot"
 auto_start_default="off"
 
+handle_auto_start_option="@continuum-handle-boot"
+handle_auto_start_default="on"
+
 # comma separated list of additional options for tmux auto start
 auto_start_config_option="@continuum-boot-options"
 auto_start_config_default=""

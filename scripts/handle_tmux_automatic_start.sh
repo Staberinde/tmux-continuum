@@ -10,6 +10,11 @@ is_tmux_automatic_start_enabled() {
 	[ "$auto_start_value" == "on" ]
 }
 
+is_tmux_automatic_start_handled(){
+	local handle_auto_start_value="$(get_tmux_option "$handle_auto_start_option" "$handle_auto_start_default")"
+	[ "$handle_auto_start_value" == "on" ]
+}
+
 is_osx() {
 	[ $(uname) == "Darwin" ]
 }
@@ -19,17 +24,19 @@ is_systemd() {
 }
 
 main() {
-	if is_tmux_automatic_start_enabled; then
-		if is_osx; then
-			"$CURRENT_DIR/handle_tmux_automatic_start/osx_enable.sh"
-		elif is_systemd; then
-			"$CURRENT_DIR/handle_tmux_automatic_start/systemd_enable.sh"
-		fi
-	else
-		if is_osx; then
-			"$CURRENT_DIR/handle_tmux_automatic_start/osx_disable.sh"
-		elif is_systemd; then
-			"$CURRENT_DIR/handle_tmux_automatic_start/systemd_disable.sh"
+	if is_tmux_automatic_start_handled; then
+		if is_tmux_automatic_start_enabled; then
+			if is_osx; then
+				"$CURRENT_DIR/handle_tmux_automatic_start/osx_enable.sh"
+			elif is_systemd; then
+				"$CURRENT_DIR/handle_tmux_automatic_start/systemd_enable.sh"
+			fi
+		else
+			if is_osx; then
+				"$CURRENT_DIR/handle_tmux_automatic_start/osx_disable.sh"
+			elif is_systemd; then
+				"$CURRENT_DIR/handle_tmux_automatic_start/systemd_disable.sh"
+			fi
 		fi
 	fi
 }
